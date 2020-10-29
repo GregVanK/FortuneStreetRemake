@@ -13,6 +13,20 @@ public class CharacterMoveExample : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.transform.position = new Vector3(this.transform.position.x + 0.001f, this.transform.position.y, this.transform.position.z);
+        if (Input.GetKeyDown(KeyCode.RightArrow)) { 
+            this.transform.position = new Vector3(this.transform.position.x + 0.5f, this.transform.position.y, this.transform.position.z); 
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            this.transform.position = new Vector3(this.transform.position.x - 0.5f, this.transform.position.y, this.transform.position.z);
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 0.5f, this.transform.position.z);
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - 0.5f, this.transform.position.z);
+        }
     }
 }
