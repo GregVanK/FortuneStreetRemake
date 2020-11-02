@@ -22,11 +22,11 @@ public class CharacterMoveExample : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 0.5f, this.transform.position.z);
+            this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y , this.transform.position.z + 0.5f);
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - 0.5f, this.transform.position.z);
+            this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y, this.transform.position.z - 0.5f);
         }
     }
 }

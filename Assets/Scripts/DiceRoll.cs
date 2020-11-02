@@ -25,21 +25,19 @@ public class DiceRoll : MonoBehaviour
     void Update()
     {
         //Stop if dice has been slowed down
-        if (cycleSpeed <= 2f)
+        if (cycleSpeed <= 1f)
         {
             //face timer increments until it's time to change face.
             if (faceTimer > cycleSpeed)
             {
                 updateDice();
                 if (isStopped)
-                    cycleSpeed += 0.5f;
+                    cycleSpeed += 0.25f;
             }
             else
             {
                 faceTimer += Time.deltaTime;
             }
-            if (Input.GetKeyDown(KeyCode.Space))
-                isStopped = true;
         }
         
             
@@ -54,5 +52,10 @@ public class DiceRoll : MonoBehaviour
         else
             currentFace++;
         spriteRenderer.sprite = diceFaces[currentFace - 1];
+    }
+
+    public void stopDice()
+    {
+        isStopped = true;
     }
 }
