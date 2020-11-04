@@ -4,9 +4,23 @@ using UnityEngine;
 
 public class Route : MonoBehaviour
 {
-    Transform[] spaces;
-    void Start()
+    Transform[] childObjects;
+    public List<Transform> childNodeList = new List<Transform>();
+
+  
+    void FillNodes()
     {
-        spaces = GetComponentsInChildren<Transform>();
+        childNodeList.Clear();
+
+        childObjects = GetComponentsInChildren<Transform>();
+
+        foreach (Transform child in childObjects)
+        {
+            if (child != this.transform)
+            {
+                childNodeList.Add(child);
+            }
+        }
     }
+
 }
