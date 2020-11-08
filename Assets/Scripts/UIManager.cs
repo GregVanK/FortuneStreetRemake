@@ -33,5 +33,7 @@ public class UIManager : MonoBehaviour
 
         //TODO: add text formatting error handling
         NetworkClient.instance.connectToServer(ipAddressInput.text,Int32.Parse(portInput.text));
+        Loader.Load(Loader.Scene.GameScene);
     }
+
 }

@@ -31,6 +31,13 @@ public class NetworkClient : MonoBehaviour
         client.Start();
     }
 
+    private void OnApplicationQuit()
+    {
+        if (client.ConnectionStatus != NetConnectionStatus.Disconnected || client.ConnectionStatus != NetConnectionStatus.Disconnecting || client.ConnectionStatus != NetConnectionStatus.None)
+            client.Disconnect("Cya idiot.");
+        Debug.Log("Disconnecting from server");
+    }
+
     //todo add username functionality
     public void connectToServer(string ipData, int portData)
     {
