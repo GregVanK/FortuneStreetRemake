@@ -46,4 +46,11 @@ public class NetworkClient : MonoBehaviour
         username.Write(usernameData);
         client.Connect(ipData, portData, username);
     }
+    public void sendEvent(Event e)
+    {
+        var message = client.CreateMessage();
+        message.Write(EventManager.instance.serializeEvent(e));
+        client.SendMessage(message, NetDeliveryMethod.ReliableUnordered);
+    }
+
 }

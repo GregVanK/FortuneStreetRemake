@@ -39,6 +39,13 @@ public class DiceRoll : MonoBehaviour
                 faceTimer += Time.deltaTime;
             }
         }
+        else
+        {
+            DiceEvent diceOutcome = new DiceEvent();
+            diceOutcome.value = currentFace;
+            diceOutcome.type = Event.EventType.Dice;
+            NetworkClient.instance.sendEvent(diceOutcome);
+        }
         
             
     }
