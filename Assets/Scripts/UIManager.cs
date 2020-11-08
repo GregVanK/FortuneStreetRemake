@@ -32,7 +32,7 @@ public class UIManager : MonoBehaviour
         portInput.interactable = false;
 
         //TODO: add text formatting error handling
-        NetworkClient.instance.connectToServer(ipAddressInput.text,Int32.Parse(portInput.text));
+        NetworkClient.instance.connectToServer(ipAddressInput.text,Int32.Parse(portInput.text),usernameInput.text);
         Loader.Load(Loader.Scene.GameScene);
     }
 

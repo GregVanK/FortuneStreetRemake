@@ -31,6 +31,7 @@ public class NetworkClient : MonoBehaviour
         client.Start();
     }
 
+    //reminder: DOES THIS EVEN GET CALLED :pleading: (maybe its because this is a singleton that techincally does and doesn't exist...)
     private void OnApplicationQuit()
     {
         if (client.ConnectionStatus != NetConnectionStatus.Disconnected || client.ConnectionStatus != NetConnectionStatus.Disconnecting || client.ConnectionStatus != NetConnectionStatus.None)
@@ -39,8 +40,10 @@ public class NetworkClient : MonoBehaviour
     }
 
     //todo add username functionality
-    public void connectToServer(string ipData, int portData)
+    public void connectToServer(string ipData, int portData,string usernameData)
     {
-        client.Connect(host: ipData, port: portData);
+        NetOutgoingMessage username = client.CreateMessage();
+        username.Write(usernameData);
+        client.Connect(ipData, portData, username);
     }
 }

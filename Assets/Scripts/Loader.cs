@@ -11,6 +11,7 @@ public static class Loader
     {
         GameScene,
         Loading,
+        ConnectTester
 
     }
     private static Action onLoaderCallback;
