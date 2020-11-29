@@ -4,6 +4,7 @@ using UnityEngine;
 using Lidgren.Network;
 using UnityEngine.UI;
 using System;
+using System.Threading;
 
 public class NetworkClient : MonoBehaviour
 {
@@ -28,7 +29,32 @@ public class NetworkClient : MonoBehaviour
     {
         config = new NetPeerConfiguration("LuckyRoad");
         client = new NetClient(config);
+        client.RegisterReceivedCallback(new SendOrPostCallback(gotMessage));
+
         client.Start();
+    }
+
+    private void gotMessage(object peer)
+    {
+        NetIncomingMessage eventMessage;
+        while ((eventMessage = client.ReadMessage()) != null)
+        {
+            switch (eventMessage.MessageType)
+            {
+                case NetIncomingMessageType.StatusChanged:
+                    NetConnectionStatus status = (NetConnectionStatus)eventMessage.ReadByte();
+                    //TODO: set up connection messages
+                    /**
+                    if (status == NetConnectionStatus.Connected)
+                    if (status == NetConnectionStatus.Disconnected)
+                    */
+                    break;
+                case NetIncomingMessageType.Data:
+                    Event e = EventManager.instance.deSerializeEvent(eventMessage.Data);
+                    GameplayManager.instance.handleEvent(e);
+                    break;
+            }
+        }
     }
 
     //reminder: DOES THIS EVEN GET CALLED :pleading: (maybe its because this is a singleton that techincally does and doesn't exist...)

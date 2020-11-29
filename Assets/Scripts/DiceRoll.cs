@@ -61,6 +61,13 @@ public class DiceRoll : MonoBehaviour
         spriteRenderer.sprite = diceFaces[currentFace - 1];
     }
 
+    public void setRollFace(int face)
+    {
+        currentFace = face;
+        cycleSpeed = 2f;
+        
+    }
+
     public void stopDice()
     {
         isStopped = true;
