@@ -44,7 +44,7 @@ public class DiceRoll : MonoBehaviour
             DiceEvent diceOutcome = new DiceEvent();
             diceOutcome.value = currentFace;
             diceOutcome.type = Event.EventType.Dice;
-            NetworkClient.instance.sendEvent(diceOutcome);
+            //NetworkClient.instance.sendEvent(diceOutcome);
         }
         
             
