@@ -41,10 +41,7 @@ public class DiceRoll : MonoBehaviour
         }
         else
         {
-            DiceEvent diceOutcome = new DiceEvent();
-            diceOutcome.value = currentFace;
-            diceOutcome.type = Event.EventType.Dice;
-            //NetworkClient.instance.sendEvent(diceOutcome);
+            StaticManager.Client.SendDiceRoll(currentFace);
         }
         
             
@@ -61,9 +58,11 @@ public class DiceRoll : MonoBehaviour
         spriteRenderer.sprite = diceFaces[currentFace - 1];
     }
 
+    //step dice cycle and set face to x
     public void setRollFace(int face)
     {
         currentFace = face;
+        updateDice();
         cycleSpeed = 2f;
         
     }

@@ -11,6 +11,7 @@ namespace LuckyRoadClient
         LocalPlayerPacket,
         PlayerDisconnectsPacket,
         PositionPacket,
+        DicePacket,
         SpawnPacket
     }
 
@@ -54,6 +55,24 @@ namespace LuckyRoadClient
 
         public override void NetIncomingMessageToPacket(NetIncomingMessage message)
         {
+            player = message.ReadString();
+        }
+    }
+    //Sends dice outcome to other players
+    public class DicePacket : Packet
+    {
+        public int Dice { get; set; }
+        public string player { get; set; }
+        public override void PacketToNetOutGoingMessage(NetOutgoingMessage message)
+        {
+            message.Write((byte)PacketTypes.DicePacket);
+            message.Write(Dice);
+            message.Write(player);
+        }
+
+        public override void NetIncomingMessageToPacket(NetIncomingMessage message)
+        {
+            Dice = message.ReadInt32();
             player = message.ReadString();
         }
     }
@@ -101,5 +120,6 @@ namespace LuckyRoadClient
             player = message.ReadString();
         }
     }
+    
 }
 

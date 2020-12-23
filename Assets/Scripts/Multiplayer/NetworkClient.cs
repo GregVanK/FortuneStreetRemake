@@ -63,6 +63,11 @@ namespace LuckyRoadClient
                                 packet.NetIncomingMessageToPacket(message);
                                 UpdatePlayerPosition((PositionPacket)packet);
                                 break;
+                            case (byte)PacketTypes.DicePacket:
+                                packet = new DicePacket();
+                                packet.NetIncomingMessageToPacket(message);
+                                UpdateDiceFace((DicePacket)packet);
+                                break;
                             case (byte)PacketTypes.SpawnPacket:
                                 packet = new SpawnPacket();
                                 packet.NetIncomingMessageToPacket(message);
@@ -95,6 +100,16 @@ namespace LuckyRoadClient
 
             NetOutgoingMessage message = client.CreateMessage();
             new PositionPacket() { player = StaticManager.LocalPlayerID, X = X, Z = Z }.PacketToNetOutGoingMessage(message);
+            client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
+            client.FlushSendQueue();
+        }
+
+        public void SendDiceRoll(int dice)
+        {
+            Debug.Log("Sending dice roll of" + dice);
+
+            NetOutgoingMessage message = client.CreateMessage();
+            new DicePacket() { player = StaticManager.LocalPlayerID, Dice = dice }.PacketToNetOutGoingMessage(message);
             client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
             client.FlushSendQueue();
         }
@@ -146,7 +161,13 @@ namespace LuckyRoadClient
 
             StaticManager.Players[packet.player].gameObject.GetComponent<Movement>().SetNextPosition(new Vector3(packet.X, 0, packet.Z));
         }
+        //Sets the dice face based server message
+        public void UpdateDiceFace(DicePacket packet)
+        {
+            Debug.Log(packet.player+"'s dice outcome was " + packet.Dice);
 
+            StaticManager.Players[packet.player].gameObject.GetComponent<Character>().dice.setRollFace(packet.Dice);
+        }
         public void DisconnectPlayer(PlayerDisconnectsPacket packet)
         {
             Debug.Log("Removing player " + packet.player);
@@ -154,76 +175,6 @@ namespace LuckyRoadClient
             MonoBehaviour.Destroy(StaticManager.Players[packet.player]);
             StaticManager.Players.Remove(packet.player);
         }
-
-        /*NetPeerConfiguration config;
-        public static NetworkClient instance;
-        public NetClient client;
-
-        public void Awake()
-        {
-            if (instance == null)
-            {
-                instance = this;
-            }
-            else
-            {
-                Debug.Log("Network Client already exists.");
-                Destroy(this);
-            }
-        }
-        public void Start()
-        {
-            config = new NetPeerConfiguration("LuckyRoad");
-            client = new NetClient(config);
-            client.RegisterReceivedCallback(new SendOrPostCallback(gotMessage));
-
-            client.Start();
-        }
-
-        private void gotMessage(object peer)
-        {
-            NetIncomingMessage eventMessage;
-            while ((eventMessage = client.ReadMessage()) != null)
-            {
-                switch (eventMessage.MessageType)
-                {
-                    case NetIncomingMessageType.StatusChanged:
-                        NetConnectionStatus status = (NetConnectionStatus)eventMessage.ReadByte();
-                        //TODO: set up connection messages
-                        /**
-                        if (status == NetConnectionStatus.Connected)
-                        if (status == NetConnectionStatus.Disconnected)
-                        
-                        break;
-                    case NetIncomingMessageType.Data:
-                        Event e = EventManager.instance.deSerializeEvent(eventMessage.Data);
-                        GameplayManager.instance.handleEvent(e);
-                        break;
-                }
-            }
-        }
-
-        //reminder: DOES THIS EVEN GET CALLED :pleading: (maybe its because this is a singleton that techincally does and doesn't exist...)
-        private void OnApplicationQuit()
-        {
-            if (client.ConnectionStatus != NetConnectionStatus.Disconnected || client.ConnectionStatus != NetConnectionStatus.Disconnecting || client.ConnectionStatus != NetConnectionStatus.None)
-                client.Disconnect("Cya idiot.");
-            Debug.Log("Disconnecting from server");
-        }
-
-        //todo add username functionality
-        public void connectToServer(string ipData, int portData, string usernameData)
-        {
-            NetOutgoingMessage username = client.CreateMessage();
-            username.Write(usernameData);
-            client.Connect(ipData, portData, username);
-        }
-        public void sendEvent(Event e)
-        {
-            var message = client.CreateMessage();
-            message.Write(EventManager.instance.serializeEvent(e));
-            client.SendMessage(message, NetDeliveryMethod.ReliableUnordered);
-        }*/
 
     }
 
