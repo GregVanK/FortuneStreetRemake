@@ -142,10 +142,11 @@ namespace LuckyRoadClient
 
             GameObject player = MonoBehaviour.Instantiate(playerPrefab, position, rotation);
 
-            // if client is local player, add controls
+            // if client is local player, add controls and focus camera on them
             if (packet.player == StaticManager.LocalPlayerID)
             {
                 player.AddComponent<CharacterController>();
+                player.tag = "Player";
             }
             else
             {
@@ -153,6 +154,7 @@ namespace LuckyRoadClient
             }
 
             StaticManager.Players.Add(packet.player, player);
+            Camera.main.GetComponent<CameraController>().ChangeTargets(player);
         }
 
         public void UpdatePlayerPosition(PositionPacket packet)

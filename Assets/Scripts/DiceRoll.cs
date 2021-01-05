@@ -19,7 +19,7 @@ public class DiceRoll : MonoBehaviour
         spriteRenderer.sprite = diceFaces[currentFace-1];
         cycleSpeed = 0.08f;
         isStopped = false;
-}
+    }
 
     //update dice every cycle
     void Update()
