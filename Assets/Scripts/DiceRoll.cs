@@ -39,9 +39,10 @@ public class DiceRoll : MonoBehaviour
                 faceTimer += Time.deltaTime;
             }
         }
-        else
+        else if (isStopped) 
         {
             StaticManager.Client.SendDiceRoll(currentFace);
+            isStopped = false;
         }
         
             
@@ -61,10 +62,10 @@ public class DiceRoll : MonoBehaviour
     //step dice cycle and set face to x
     public void setRollFace(int face)
     {
-        currentFace = face;
-        updateDice();
+        currentFace = face-1;
         cycleSpeed = 2f;
-        
+        updateDice();
+
     }
 
     public void stopDice()
